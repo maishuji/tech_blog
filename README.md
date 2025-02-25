@@ -12,7 +12,7 @@ A blog platform built with Python and the Django framework, designed to share te
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/technical-blog.git
+   git clone git@github.com:maishuji/tech_blog_heho.git
    ```
 
 
