@@ -1,21 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Blog</title>
-</head>
-<body>
-    <h1>Welcome to My Blog</h1>
-    <ul>
-        {% for post in posts %}
-            <li>
-                <h2>{{ post.title }}</h2>
-                <p>{{ post.content }}</p>
-            </li>
-        {% empty %}
-            <p>No blog posts available.</p>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Articles - My Blog{% endblock %}
+
+{% block content %}
+<header class="text-center my-6">
+    <h1 class="text-4xl font-bold text-blue-600">Welcome to My Blog</h1>
+    <p class="text-gray-600 mt-2">Sharing thoughts and ideas</p>
+</header>
+
+<div class="max-w-3xl mx-auto">
+    {% if posts %}
+        <ul class="space-y-6">
+            {% for post in posts %}
+                <li class="bg-white p-6 shadow-lg rounded-lg">
+                    <h2 class="text-2xl font-semibold text-gray-800">{{ post.title }}</h2>
+                    <p class="text-gray-600 mt-2">{{ post.content }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center text-gray-500">No blog posts available.</p>
+    {% endif %}
+</div>
+{% endblock %}

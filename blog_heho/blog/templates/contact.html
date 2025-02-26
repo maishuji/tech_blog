@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact - My Blog{% endblock %}
+
+{% block content %}
+<header class="text-center my-6">
+    <h1 class="text-4xl font-bold text-blue-600">Contact Me</h1>
+    <p class="text-gray-600 mt-2">Feel free to send me a message!</p>
+</header>
+
+<div class="max-w-2xl mx-auto bg-white p-6 shadow-lg rounded-lg">
+    <form method="post" action="{% url 'contact' %}" class="space-y-4">
+        {% csrf_token %}
+        
+        <div>
+            <label for="name" class="block text-gray-700 font-medium">Your Name</label>
+            <input type="text" id="name" name="name" required 
+                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+            <label for="email" class="block text-gray-700 font-medium">Your Email</label>
+            <input type="email" id="email" name="email" required 
+                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+            <label for="message" class="block text-gray-700 font-medium">Message</label>
+            <textarea id="message" name="message" rows="5" required 
+                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <button type="submit" 
+            class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+            Send Message
+        </button>
+    </form>
+</div>
+{% endblock %}

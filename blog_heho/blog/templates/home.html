@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My Blog{% endblock %}
+
+{% block content %}
+<header class="text-center my-10">
+    <h1 class="text-5xl font-bold text-blue-600">Welcome to My Blog</h1>
+    <p class="text-gray-600 mt-4 text-lg">Sharing thoughts, tutorials, and insights on programming and technology.</p>
+</header>
+
+<div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Recent Articles</h2>
+    
+    {% if posts %}
+        <ul class="space-y-6">
+            {% for post in posts %}
+                <li class="bg-white p-6 shadow-lg rounded-lg">
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ post.title }}</h3>
+                    <p class="text-gray-600 mt-2">{{ post.content|truncatewords:30 }}</p>
+                    <a href="{% url 'blog_detail' post.id %}" class="text-blue-600 font-semibold mt-2 inline-block">
+                        Read More →
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-500 text-center">No articles available yet. Stay tuned!</p>
+    {% endif %}
+</div>
+{% endblock %}
