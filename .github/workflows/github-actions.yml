@@ -31,9 +31,9 @@ jobs:
       - name: 🔄 Run Migrations (SQLite)
         run: |
           source venv/bin/activate
-          python manage.py migrate
+          python blog_heho/manage.py migrate
 
       - name: 🛠️ Run Tests
         run: |
           source venv/bin/activate
-          python blog_hehomanage.py test
+          python blog_heho/manage.py test
