@@ -39,3 +39,27 @@
     color: black;
     margin-top: 10px;
 }
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 8px 12px;
+    margin: 5px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    color: blue;
+    background-color: #f4f4f4;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.pagination span {
+    padding: 8px 12px;
+    font-weight: bold;
+}
