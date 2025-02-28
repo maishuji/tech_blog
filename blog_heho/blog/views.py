@@ -1,20 +1,21 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from .models import BlogPost
 import markdown
 
 def blog_list(request):
     posts = BlogPost.objects.all()
-
+    # Pagination: Show 5 posts per page
+    paginator = Paginator(posts, 5)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     # Convert each post's content from Markdown to HTML
-    for post in posts:
+    for post in page_obj:
         post.content = markdown.markdown(post.content, extensions=["extra", "fenced_code", "toc"])
-
-    return render(request, 'blog/blog_list.html', {'posts': posts})
-
-    #posts = BlogPost.objects.all()  # Get all blog posts from the database
-    #return render(request, 'blog/blog_list.html', {'posts': posts})
+    return render(request, 'blog/blog_list.html', {'page_obj': page_obj})
 
 def blog_detail_view(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)

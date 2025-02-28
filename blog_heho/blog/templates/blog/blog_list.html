@@ -9,9 +9,9 @@
 </header>
 
 <div class="max-w-3xl mx-auto">
-    {% if posts %}
+    {% if page_obj %}
         <ul class="space-y-6">
-            {% for post in posts %}
+            {% for post in page_obj %}
                 <li class="markdown-body bg-white p-6 shadow-lg rounded-lg">
                     <h2 class="text-2xl font-semibold text-gray-800">{{ post.title }}</h2>
                     <p class="text-gray-600 mt-2">{{ post.content |safe}}</p>
@@ -20,6 +20,21 @@
         </ul>
     {% else %}
         <p class="text-center text-gray-500">No blog posts available.</p>
+    {% endif %}
+</div>
+
+<!-- Pagination Navigation -->
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
     {% endif %}
 </div>
 {% endblock %}
