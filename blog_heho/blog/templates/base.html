@@ -10,6 +10,14 @@
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
 </head>
 <body class="bg-gray-100 text-gray-900">
+
+    <!-- Header -->    
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Mofafen Blog</h1>
+        </div>
+    </header>
+    
     <div class="flex min-h-screen">
         <!-- Include the Sidebar Menu -->
         {% include 'menu.html' %}
@@ -19,5 +27,11 @@
             {% block content %}{% endblock %}
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center p-4 mt-auto">
+        <p>&copy; 2025 Mofafen Blog. All rights reserved.</p>
+        <p>Author: Quentin Cartier</p>
+    </footer>
 </body>
 </html>
