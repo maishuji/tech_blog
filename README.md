@@ -1,4 +1,4 @@
-# Technical Blog Platfor
+# Technical Blog Platform
 
 A blog platform built with Python and the Django framework, designed to share technical blog posts on various topics.
 
