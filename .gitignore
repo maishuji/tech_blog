@@ -1,4 +1,6 @@
 venv
 .env
+blog_heho/media
+blog_heho/db.sqlite3
 blog_heho/*/__pycache__
 **/migrations/*
