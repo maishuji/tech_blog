@@ -23,7 +23,15 @@ A blog platform built with Python and the Django framework, designed to share te
    ```bash
    pip install -r requirements.txt
    ```
-5. Run server
+5. Run migrations
+   ```bash
+   python3 manage.py migrate
+   ```
+6. Create superuser
+   ```bash
+   python3 manage.py createsuperuser
+   ```
+7. Run server
    ```bash
    python3 manage.py runserver
    ```
