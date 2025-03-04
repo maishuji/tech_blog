@@ -28,6 +28,11 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: ☑ Pylint
+        run: |
+          source venv/bin/activate
+          pylint blog_heho/blog
+
       - name: 🔄 Run Migrations (SQLite)
         run: |
           source venv/bin/activate
