@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import BlogPost
 from .forms import ContactForm
 from django.shortcuts import redirect
+from django.core.mail import send_mail, EmailMessage
 import markdown
 
 def blog_list(request):
@@ -29,6 +30,14 @@ def contact_view(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             # Extract the data from the form
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            
+            # Send the email
+            send_mail(subject, message, email, ['d19140e9a1-28460f@inbox.mailtrap.io'])
+            
             return redirect('success')
     
     form = ContactForm()
