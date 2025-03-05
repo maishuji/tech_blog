@@ -63,3 +63,10 @@
     padding: 8px 12px;
     font-weight: bold;
 }
+
+body{
+    background-image: url("/static/images/bg_pattern1.png");
+    background-repeat: repeat;  /* This makes the image repeat */
+    background-position: top left; /* Optional: controls where the image starts */
+    background-size: auto;  /* Optional: controls the size of the image */
+}
