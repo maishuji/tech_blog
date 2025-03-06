@@ -33,30 +33,16 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 🔧 Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - name: ⚙️ Install Dependencies
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Build Django image with Docker Compose
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pylint pylint-django
+          docker-compose -f docker-compose.yml build
 
-      - name: ☑ Pylint
+    
+      # Step 4: Run the tests using Docker Compose
+      - name: Run tests with Docker Compose
         run: |
-          source venv/bin/activate
-          pylint blog_heho/blog
-
-      - name: 🔄 Run Migrations (SQLite)
-        run: |
-          source venv/bin/activate
-          python blog_heho/manage.py migrate
-
-      - name: 🛠️ Run Tests
-        run: |
-          source venv/bin/activate
-          python blog_heho/manage.py test
+          docker-compose -f docker-compose.yml up -d
+          docker-compose exec django python blog_heho/manage.py test
