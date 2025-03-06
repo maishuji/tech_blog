@@ -36,6 +36,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Build App Image
+        run: docker build . -t django_app
+
       - name: Install Docker Compose
         run: |
           sudo apt-get update
