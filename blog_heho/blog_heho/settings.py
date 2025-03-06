@@ -35,10 +35,10 @@ SECRET_KEY = "django-insecure-!-@^5ju79i0vs(tjm!y9ce!-^8%_ysew#t80ug0x4z+902&kye
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+import os  
 
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",

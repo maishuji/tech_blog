@@ -76,3 +76,88 @@ DB_PORT = '5432' # default postgres port
    ```bash
    python3 manage.py runserver
    ```
+
+   ## Deployment
+
+Instead of running the application locally, you can deploy it using Docker and Docker-compose. To do so, follow these steps:
+
+   1. Install Docker and Docker Compose
+   2. Build the Docker image
+   ```bash
+   docker build -t django_app .
+   ```
+   3. Run Docker Compose
+   ```bash
+   docker-compose up -d
+   ```
+
+## Deployment on server
+
+1. Install and set docker and docker-compose on server
+```bash
+sudo apt update
+sudo apt install docker.io docker-compose
+docker-compose --version
+sudo usermod -aG docker ubuntu
+```
+2. Create or import the key pair to the server (public key in ~/.ssh/authorized_keys)
+3. Set up the environment variables in ~/.profile
+<your-public-ip> : E.g. `www.mywebsite.com`
+```bash
+export DJANGO_ALLOWED_HOSTS='<your-public-ip>,<your-domain-name>'
+```
+
+## Setting up Nginx, and SSL certificate
+
+1. Install Nginx and Gunicorn
+```bash
+sudo apt install nginx
+sudo apt install gunicorn
+```
+2. Configure Nginx with SSL certificate from Let's Encrypt (Free SSL Certificate)
+```bash
+sudo nano /etc/nginx/sites-available/tech_blog
+```
+
+   - 2.1. Obtaining certificate from Let's Encrypt
+
+```bash
+sudo apt update
+sudo apt install certbot python3-certbot-nginx
+sudo certbot certonly --standalone -d www.qcartier.dev
+```
+
+   - 2.2. Add the following configuration at `/etc/nginx/sites-available/` :
+```text
+server {
+   listen 80;
+   server_name <domain-name>; # E.g www.mynamewebsite.com
+
+   # Redirect all HTTP traffic to HTTPS
+   return 301 https://#host$request_uri;   
+}
+
+server {
+    listen 443 ssl;
+    server_name <domain-name>; # E.g www.mynamewebsite.com
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/<domain-name>/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/<domain-name>/privkey.pem;
+
+    # Additional SSL settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
+
+    # HSTS Header for additional security
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+
+    # Other server settings (e.g., Django app configuration)
+    location / {
+        proxy_pass http://localhost:8000;  # Adjust this if your app runs on a different port
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
