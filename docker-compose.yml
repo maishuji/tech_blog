@@ -28,4 +28,4 @@ services:
       - postgres
     ports:
       - "8000:8000"
-    command: bash -c "./wait-for-it.sh postgres:5432 -- python blog_heho/manage.py migrate && python blog_heho/manage.py runserver 0.0.0.0:8000"
+    #command: bash -c "./wait-for-it.sh postgres:5432 -- python blog_heho/manage.py migrate --no-input && python blog_heho/manage.py runserver 0.0.0.0:8000"

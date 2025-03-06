@@ -13,21 +13,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_DB: testdb
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpassword
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U testuser -d testdb"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
           
     steps:
       - name: 📥 Checkout Repository
@@ -45,12 +30,14 @@ jobs:
           sudo apt-get install -y docker-compose
           docker-compose --version  # Verify the installation
 
-      - name: Build Django image with Docker Compose
-        run: |
-          docker-compose -f docker-compose.yml build
+      - name: Start Services with Docker Compose
+        run: docker-compose -f docker-compose.yml up -d
 
-          # Step 4: Run the tests using Docker Compose
+      - name: Run linter
+        run: docker-compose run --rm django pylint blog_heho/blog
+
       - name: Run tests with Docker Compose
-        run: |
-          docker-compose -f docker-compose.yml up -d
-          docker-compose exec django python blog_heho/manage.py test
+        run: docker-compose run --rm django python blog_heho/manage.py test
+
+      - name: Clean up Docker
+        run: docker-compose down

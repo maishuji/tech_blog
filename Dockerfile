@@ -12,6 +12,8 @@ COPY . /app/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+# Make wait-for-it.sh executable
+RUN chmod +x wait-for-it.sh
 
 # Set the environment variable for Django
 ENV PYTHONUNBUFFERED 1
@@ -20,4 +22,5 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8000
 
 # Command to run the application (use `runserver` in dev, or `gunicorn` for production)
-CMD ["python", "blog_heho/manage.py", "runserver", "0.0.0.0:8000"]
+# Run the entry point script
+CMD ["sh", "-c", "./wait-for-it.sh postgres:5432 && python blog_heho/manage.py migrate --no-input && python blog_heho/manage.py runserver 0.0.0.0:8000"]
