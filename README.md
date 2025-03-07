@@ -77,7 +77,7 @@ DB_PORT = '5432' # default postgres port
    python3 manage.py runserver
    ```
 
-   ## Deployment
+## Deployment
 
 Instead of running the application locally, you can deploy it using Docker and Docker-compose. To do so, follow these steps:
 
@@ -91,37 +91,46 @@ Instead of running the application locally, you can deploy it using Docker and D
    docker-compose up -d
    ```
 
-## Deployment on server
+### Prerequisites on server
 
-1. Install and set docker and docker-compose on server
+#### Install and set docker and docker-compose on server
+
 ```bash
 sudo apt update
 sudo apt install docker.io docker-compose
 docker-compose --version
 sudo usermod -aG docker ubuntu
 ```
-2. Create or import the key pair to the server (public key in ~/.ssh/authorized_keys)
-3. Set up the environment variables in ~/.profile
+#### Setting up environment variables
+
+- Create or import the key pair to the server (public key in ~/.ssh/authorized_keys) from EC2 instance management console.
+- Set up the environment variables inside the instance in ~/.profile
 <your-public-ip> : E.g. `www.mywebsite.com`
 ```bash
 export DJANGO_ALLOWED_HOSTS='<your-public-ip>,<your-domain-name>'
 export DJANGO_SECRET_KEY='<your-secret-key>'
 export DJANGO_TRUSTED_HOSTS='<your-full-domain-name>' # Should start with https or http
+
+# EMAIL CONFIGURATION
+EMAIL_HOST = '<host>' # e.g 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '<host_user>>'
+EMAIL_HOST_PASSWORD = '<host_password>'
+EMAIL_PORT = '2525' # default mailtrap port
 ```
 
-## Setting up Nginx, and SSL certificate
+#### Setting up Nginx, and SSL certificate
 
-1. Install Nginx and Gunicorn
+#####  Install Nginx and Gunicorn
 ```bash
 sudo apt install nginx
 sudo apt install gunicorn
 ```
-2. Configure Nginx with SSL certificate from Let's Encrypt (Free SSL Certificate)
+##### Configure Nginx with SSL certificate from Let's Encrypt (Free SSL Certificate)
 ```bash
 sudo nano /etc/nginx/sites-available/tech_blog
 ```
 
-   - 2.1. Obtaining certificate from Let's Encrypt
+######  Obtaining certificate from Let's Encrypt
 
 ```bash
 sudo apt update
@@ -129,7 +138,8 @@ sudo apt install certbot python3-certbot-nginx
 sudo certbot certonly --standalone -d www.qcartier.dev
 ```
 
-   - 2.2. Add the following configuration at `/etc/nginx/sites-available/` :
+###### Add the following configuration at `/etc/nginx/sites-available/`
+
 ```text
 server {
    listen 80;
