@@ -29,6 +29,10 @@ services:
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
       - DJANGO_TRUSTED_ORIGINS=${DJANGO_TRUSTED_ORIGINS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
       #- DATABASE_URL=postgres://testuser:testpassword@postgres:5432/testdb
     depends_on:
       - postgres

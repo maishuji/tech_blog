@@ -16,7 +16,6 @@ jobs:
     - name: Set up SSH
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-        MAIL_USER_HOST: ${{ secrets.MAIL_USER_HOST }}
       run: |
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
@@ -28,12 +27,30 @@ jobs:
       run: |
         scp -r ./* ubuntu@13.61.104.192:~/app
 
+
     - name: Deploy with Docker Compose
+      env:
+        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+        EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+        EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
       run: |
-        ssh ubuntu@13.61.104.192 << 'EOF'
+        ssh ubuntu@13.61.104.192 "
+          sed -i '/^export EMAIL_HOST_USER=/d' ~/.profile
+          echo 'export EMAIL_HOST_USER=$EMAIL_HOST_USER' >> ~/.profile
+
+          sed -i '/^export EMAIL_HOST_PASSWORD=/d' ~/.profile
+          echo 'export EMAIL_HOST_PASSWORD=$EMAIL_HOST_PASSWORD' >> ~/.profile
+
+          sed -i '/^export EMAIL_HOST=/d' ~/.profile
+          echo 'export EMAIL_HOST=$EMAIL_HOST' >> ~/.profile
+
+          sed -i '/^export EMAIL_PORT=/d' ~/.profile
+          echo 'export EMAIL_PORT=$EMAIL_PORT' >> ~/.profile
+
+          source ~/.profile
           cd ~/app
-          echo "$MAIL_USER_HOST" > .env
           docker build -t django_app .
           docker-compose down
           docker-compose up -d
-        EOF
+        "
