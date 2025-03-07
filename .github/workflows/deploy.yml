@@ -30,10 +30,6 @@ jobs:
     - name: Deploy with Docker Compose
       run: |
         ssh ubuntu@13.61.104.192 << 'EOF'
-          source ~/.bashrc
-          printenv
-          echo "Test ALLOWED_HOSTS :: $DJANGO_ALLOWED_HOSTS"
-          echo $DJANGO_ALLOWED_HOSTS
           cd ~/app
           docker build -t django_app .
           docker-compose down

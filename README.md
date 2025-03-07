@@ -105,6 +105,8 @@ sudo usermod -aG docker ubuntu
 <your-public-ip> : E.g. `www.mywebsite.com`
 ```bash
 export DJANGO_ALLOWED_HOSTS='<your-public-ip>,<your-domain-name>'
+export DJANGO_SECRET_KEY='<your-secret-key>'
+export DJANGO_TRUSTED_HOSTS='<your-full-domain-name>' # Should start with https or http
 ```
 
 ## Setting up Nginx, and SSL certificate
