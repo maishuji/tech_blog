@@ -38,7 +38,7 @@ DEBUG = True
 import os  
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
-
+CSRF_TRUSTED_ORIGINS = os.getenv("DJANGO_TRUSTED_ORIGINS", "localhost").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin",

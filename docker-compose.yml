@@ -25,6 +25,7 @@ services:
       - DB_PASSWORD=testpassword
       - DB_PORT=5432
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - DJANGO_TRUSTED_ORIGINS=${DJANGO_TRUSTED_ORIGINS}
       #- DATABASE_URL=postgres://testuser:testpassword@postgres:5432/testdb
     depends_on:
       - postgres
