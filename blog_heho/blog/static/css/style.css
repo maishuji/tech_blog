@@ -70,3 +70,18 @@ body{
     background-position: top left; /* Optional: controls where the image starts */
     background-size: auto;  /* Optional: controls the size of the image */
 }
+
+/* Not used for now */
+.bg-menu { 
+    background-image: url("/static/images/bg_menu_pattern1.png");
+    background-repeat: repeat;  /* This makes the image repeat */
+    background-position: top left; /* Optional: controls where the image starts */
+    background-size: auto;  /* Optional: controls the size of the image */
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.bg-header {
+    background-image: url("/static/images/banner3.png");
+    background-size: auto;
+}

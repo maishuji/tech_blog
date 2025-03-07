@@ -11,16 +11,55 @@
 </head>
 <body class="bg-gray-100 text-gray-900">
 
+    <script>
+        // Detect screen size and toggle the mobile menu visibility
+        function toggleMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.toggle('hidden');  // Toggle menu visibility
+            }
+        }
+
+        // Detect screen size and remove the sidebar for smaller screens (e.g., mobile)
+        if (window.innerWidth < 768) {  // For mobile screens (can adjust the width threshold)
+            const sidebar = document.getElementById('sidebar-menu');
+            if (sidebar) {
+                sidebar.classList.add('hidden');  // Hide the sidebar on mobile
+            }
+        }
+    </script>
+
     <!-- Header -->    
     <header class="bg-blue-600 text-white p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold">Mofafen Blog</h1>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <div class="md:hidden p-2 bg-blue-600 text-white flex justify-start">
+                <button id="menu-toggle" class="text-xl font-bold bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400" onclick="toggleMenu()">☰ Menu</button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Initially Hidden) -->
+        <div id="mobile-menu" class="bg-blue-700 md:hidden hidden text-white p-6">
+            <nav class="flex flex-col space-y-2">
+                <a href="/home" class="block py-2 px-3 rounded-lg hover:bg-blue-500">Home</a>
+                <a href="/articles" class="block py-2 px-3 rounded-lg hover:bg-blue-500">Articles</a>
+                <a href="/contact" class="block py-2 px-3 rounded-lg hover:bg-blue-500">Contact</a>
+            </nav>
         </div>
     </header>
-    
+
     <div class="flex min-h-screen">
-        <!-- Include the Sidebar Menu -->
-        {% include 'menu.html' %}
+        <!-- Sidebar (Visible Only on Desktop) -->
+        <aside id="sidebar-menu" class="bg-blue-700 w-full md:w-64 text-white p-6 hidden md:flex flex-col">
+            <h2 class="text-2xl font-bold">Menu</h2>
+            <nav class="mt-4 space-y-2">
+                <a href="/home" class="block py-2 px-3 rounded-lg hover:bg-blue-500">Home</a>
+                <a href="/articles" class="block py-2 px-3 rounded-lg hover:bg-blue-500">Articles</a>
+                <a href="/contact" class="block py-2 px-3 rounded-lg hover:bg-blue-500">Contact</a>
+            </nav>
+        </aside>
 
         <!-- Main Content -->
         <div class="flex-1 p-6">
