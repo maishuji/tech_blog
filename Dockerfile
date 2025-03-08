@@ -23,4 +23,5 @@ EXPOSE 8000
 
 # Command to run the application (use `runserver` in dev, or `gunicorn` for production)
 # Run the entry point script
-CMD ["/bin/bash", "-c", "./wait-for-it.sh postgres:5432 && python blog_heho/manage.py migrate --no-input && python blog_heho/manage.py runserver 0.0.0.0:8000"]
+CMD ["/bin/bash", "-c", "./wait-for-it.sh postgres:5432 && python blog_heho/manage.py makemigrations blog && \
+    python blog_heho/manage.py migrate --no-input && python blog_heho/manage.py runserver 0.0.0.0:8000"]
