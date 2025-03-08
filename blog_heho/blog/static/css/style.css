@@ -76,6 +76,14 @@
     /*text-transform: uppercase;*/
 }
 
+.comment {
+    border-left: 3px solid #007bff;
+    margin: 10px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
 body{
     background-image: url("/static/images/bg_pattern1.png");
     background-repeat: repeat;  /* This makes the image repeat */

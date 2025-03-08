@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from .models import BlogPost
-from .forms import ContactForm
+from .forms import ContactForm, CommentForm
 
 def blog_list(request):
     '''
@@ -29,7 +29,30 @@ def blog_detail_view(request, post_id):
     '''
     post = get_object_or_404(BlogPost, id=post_id)
     post.content = markdown.markdown(post.content, extensions=["extra", "fenced_code", "toc"])
-    return render(request, "blog/blog_detail.html", {"post": post})
+
+    # Add comments to the post
+    comments = post.comments.all()
+    comment_form = CommentForm()
+    #context = {
+    #    'post': post,
+    #    'comments': comments,
+    #    'comment_form': comment_form,
+    #}
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('blog_detail', post_id=post.id)
+    else:
+        comment_form = CommentForm()
+
+    return render(
+        request,
+        "blog/blog_detail.html", 
+        {"post": post, "comments": comments, "comment_form": comment_form}
+    )
 
 def contact_view(request):
     '''

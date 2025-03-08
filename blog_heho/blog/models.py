@@ -36,9 +36,28 @@ class BlogImage(models.Model):
     '''
     image = models.ImageField(upload_to="images/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()  # Fixes potential Pylint issues
+
 
     def __str__(self):
         '''
         String representation of the model
         '''
         return str(self.image)
+
+class Comment(models.Model):
+    '''
+    Model to store blog comments
+    '''
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name="comments")
+    author = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()  # Fixes potential Pylint issues
+
+
+    def __str__(self):
+        '''
+        String representation of the model
+        '''
+        return f"Comment by {self.author} on {getattr(self.post, 'title', 'Unknown Post')}"
