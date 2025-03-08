@@ -64,6 +64,18 @@
     font-weight: bold;
 }
 
+.tag {
+    display: inline-block;
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark text */
+    padding: 5px 10px;
+    margin: 3px;
+    border-radius: 15px; /* Rounded corners */
+    font-size: 14px;
+    font-weight: bold;
+    /*text-transform: uppercase;*/
+}
+
 body{
     background-image: url("/static/images/bg_pattern1.png");
     background-repeat: repeat;  /* This makes the image repeat */
