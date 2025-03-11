@@ -4,7 +4,9 @@
 
 {% block content %}
 <div class="max-w-3xl mx-auto bg-white p-6 shadow-lg rounded-lg mt-6">
-    <h1 class="text-4xl font-bold text-gray-800">{{ post.title }}</h1>
+    <div class="markdown-body post-title">
+        {{ post.title  | safe }}
+    </div>
     <p class="text-gray-500 mt-2">Published on {{ post.created_at|date:"F d, Y" }}</p>
     
     <div class="markdown-body">

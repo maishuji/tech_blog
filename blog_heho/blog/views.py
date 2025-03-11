@@ -20,6 +20,7 @@ def blog_list(request):
 
     # Convert each post's content from Markdown to HTML
     for post in page_obj:
+        post.title = markdown.markdown(post.title, extensions=["extra", "fenced_code", "toc"])
         post.content = markdown.markdown(post.content, extensions=["extra", "fenced_code", "toc"])
     return render(request, 'blog/blog_list.html', {'page_obj': page_obj})
 
@@ -28,6 +29,7 @@ def blog_detail_view(request, post_id):
     Show a blog post details
     '''
     post = get_object_or_404(BlogPost, id=post_id)
+    post.title = markdown.markdown(post.title, extensions=["extra", "fenced_code", "toc"])
     post.content = markdown.markdown(post.content, extensions=["extra", "fenced_code", "toc"])
 
     # Add comments to the post
@@ -80,5 +82,6 @@ def home_view(request):
 
     # Convert each post's content from Markdown to HTML
     for post in posts:
+        post.title = markdown.markdown(post.title, extensions=["extra", "fenced_code", "toc"])
         post.content = markdown.markdown(post.content, extensions=["extra", "fenced_code", "toc"])
     return render(request, "home.html", {"posts": posts})

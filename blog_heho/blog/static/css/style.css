@@ -105,3 +105,27 @@ body{
     background-image: url("/static/images/banner3.png");
     background-size: auto;
 }
+
+/* Specify how inline code should look like when present in the title of a blog post*/
+.markdown-body h1 code {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+
+    padding: 0px 4px;
+    border-radius: 0px;
+  }
+
+.text-4xl {
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem; /* 40px */
+}
+
+
+.post-title {
+    line-height: 2.5rem;
+    font-size: 2.25rem;
+    padding: 0px 8px;
+    background-color: rgba(0, 102, 255, 0.2);
+}
+  
