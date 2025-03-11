@@ -35,9 +35,9 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-import os  
+DJANGO_ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "")
+ALLOWED_HOSTS = [host.strip() for host in DJANGO_ALLOWED_HOSTS.split(",") if host]
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 CSRF_TRUSTED_ORIGINS = []
 if os.getenv("DJANGO_TRUSTED_ORIGINS"): 
     CSRF_TRUSTED_ORIGINS = os.getenv("DJANGO_TRUSTED_ORIGINS", "localhost").split(",")
