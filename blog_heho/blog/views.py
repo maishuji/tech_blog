@@ -85,3 +85,9 @@ def home_view(request):
         post.title = markdown.markdown(post.title, extensions=["extra", "fenced_code", "toc"])
         post.content = markdown.markdown(post.content, extensions=["extra", "fenced_code", "toc"])
     return render(request, "home.html", {"posts": posts})
+
+def about_view(request):
+    '''
+    Show the about page
+    '''
+    return render(request, "about.html")
