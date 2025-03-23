@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: blog_tech_django
+    environment:
+      - DJANGO_SETTINGS_MODULE=blog_heho.settings
+      - DJANGO_DEBUG=True
+    volumes:
+      - .:/app  # Mount the code folder for live editing
+    command: bash -c "ls && ./wait-for-it.sh tech_blog_heho_postgres_1:5432 && python blog_heho/manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+
+    # Other overrides or specific dev settings
