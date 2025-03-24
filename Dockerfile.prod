@@ -1,0 +1,28 @@
+# Use an official Python runtime as a parent image
+FROM python:3.13.2-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install system dependencies (only what's necessary for production)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*  # Clean up the apt cache to reduce image size
+
+# Copy the current directory contents into the container at /app
+COPY . /app/
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make wait-for-it.sh executable
+RUN chmod +x wait-for-it.sh
+
+# Set environment variables for Django (consider using env file or secrets manager in production)
+ENV PYTHONUNBUFFERED=1
+ # Make sure to set production settings module
+ENV DJANGO_SETTINGS_MODULE=blog_heho.settings.production 
+
+# Expose the port Gunicorn will run on
+EXPOSE 8000

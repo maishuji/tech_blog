@@ -7,9 +7,6 @@ services:
       POSTGRES_DB: testdb
       POSTGRES_USER: testuser
       POSTGRES_PASSWORD: testpassword
-      
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data  # Persist data in a Docker volume
     healthcheck:
@@ -19,26 +16,17 @@ services:
       retries: 5
 
   django:
-    image: django_app
+    image: blog_tech_django
     environment:
       - DB_HOST=postgres
       - DB_NAME=testdb
       - DB_USER=testuser
       - DB_PASSWORD=testpassword
       - DB_PORT=5432
-      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
-      - DJANGO_TRUSTED_ORIGINS=${DJANGO_TRUSTED_ORIGINS}
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
-      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-      - EMAIL_HOST=${EMAIL_HOST}
-      - EMAIL_PORT=${EMAIL_PORT}
-      #- DATABASE_URL=postgres://testuser:testpassword@postgres:5432/testdb
     depends_on:
       - postgres
     ports:
       - "8000:8000"
-    #command: bash -c "./wait-for-it.sh postgres:5432 -- python blog_heho/manage.py migrate --no-input && python blog_heho/manage.py runserver 0.0.0.0:8000"
 
 volumes:
   postgres_data:  # Define the volume for the PostgreSQL service

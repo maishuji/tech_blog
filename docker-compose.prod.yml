@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    environment:
+      - DJANGO_SETTINGS_MODULE=blog_heho.settings.production
+      - DJANGO_DEBUG=False
+    command: |
+      bash -c "./wait-for-it.sh postgres:5432 && \
+      python blog_heho/manage.py makemigrations blog && \
+      python blog_heho/manage.py migrate --no-input && \
+      python blog_heho/manage.py collectstatic --noinput && \
+      gunicorn --bind 0.0.0.0:8000 blog_heho.wsgi:application"
+    ports:
+      - "8000:8000"
+
+    # Other overrides or specific prod settings
