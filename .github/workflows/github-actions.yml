@@ -31,7 +31,7 @@ jobs:
           docker-compose --version  # Verify the installation
 
       - name: Start Services with Docker Compose
-        run: docker-compose -f docker-compose.yml -f docker-compose up -d
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
       - name: Run linter
         run: docker-compose run --rm django pylint blog_heho/blog
