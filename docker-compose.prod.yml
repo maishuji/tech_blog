@@ -8,13 +8,20 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=blog_heho.settings.production
       - DJANGO_DEBUG=False
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - DJANGO_TRUSTED_ORIGINS=${DJANGO_TRUSTED_ORIGINS}
     command: |
-      bash -c "./wait-for-it.sh postgres:5432 && \
+      bash -c "printenv && \
+      ./wait-for-it.sh postgres:5432 && \
       python blog_heho/manage.py makemigrations blog && \
       python blog_heho/manage.py migrate --no-input && \
       python blog_heho/manage.py collectstatic --noinput && \
-      gunicorn --bind 0.0.0.0:8000 blog_heho.wsgi:application"
+      gunicorn --chdir /app/blog_heho/ blog_heho.wsgi:application --bind 0.0.0.0:8000"
     ports:
       - "8000:8000"
+    volumes:
+      - /var/www/static:/app/blog_heho/staticfiles  # Mount static files outside
+
 
     # Other overrides or specific prod settings

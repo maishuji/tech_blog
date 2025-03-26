@@ -28,8 +28,12 @@ jobs:
     - name: Copy files via SSH
       run: |
         # Copy your application files to the EC2 instance
-        scp -r ./* ubuntu@13.61.104.192:/home/ubuntu/app
-
+        ls -la .
+        pwd
+        ls ~/.ssh/*
+        ssh ubuntu@13.61.104.192 'mkdir -p ~/app && chmod 755 ~/app'
+        scp -r blog_heho docker-compose.prod.yml docker-compose.yml \
+        Dockerfile.prod requirements.prod.txt ubuntu@13.61.104.192:~/app/
     - name: Set up environment variables on EC2
       env:
         EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
@@ -47,17 +51,23 @@ jobs:
         "
 
     - name: Deploy with Docker Compose
+      env: 
+        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
       run: |
-        ssh ubuntu@13.61.104.192 "
+        ssh ubuntu@13.61.104.192 '
+          # Retrieve env variables from profile before doing docker-compose
+          source ~/.profile
+
           # Navigate to the application directory
-          cd /home/ubuntu/app
+          cd ~/app
           
           # Pull the latest images (if using a Docker registry) or build them
-          docker-compose -f docker-compose.prod.yml pull
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
 
           # Stop and remove any existing containers
-          docker-compose down
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
 
           # Build and start containers in detached mode
-          docker-compose -f docker-compose.prod.yml up --build -d
-        "
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+        '
