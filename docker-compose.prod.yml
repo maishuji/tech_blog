@@ -22,6 +22,7 @@ services:
       - "8000:8000"
     volumes:
       - /var/www/static:/app/blog_heho/staticfiles  # Mount static files outside
+      - /var/www/media:/app/blog_heho/media
 
 
     # Other overrides or specific prod settings
