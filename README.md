@@ -151,11 +151,16 @@ server {
 
 server {
     listen 443 ssl;
-    server_name <domain-name>; # E.g www.mynamewebsite.com
+    server_name <domain-name>; # E.g www.mynamewebsite.com    
 
     # SSL Configuration
     ssl_certificate /etc/letsencrypt/live/<domain-name>/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/<domain-name>/privkey.pem;
+
+   # Serve statics in production (through https)
+   location / {
+      alias /var/www/static/
+   }
 
     # Additional SSL settings
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -173,3 +178,25 @@ server {
     }
 }
 ```
+
+
+### Debugging hints
+
+If for some reasons the deployment failed, remember to check the disk usage on the target machine.
+
+```bash
+ssh ubuntu@<my_ip>
+df -h
+```
+
+A `/dev/root` filesystem used at 100% would indicate a full disk. In this case, you need to free up space:
+
+```bash
+# Clean up unused docker images or containers
+docker system prune -a
+
+# Remove old logs or temporary files
+sudo rm -rf /var/log/*
+sudo rm -rf /tmp/*
+```
+
