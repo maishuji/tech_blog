@@ -9,6 +9,8 @@ services:
       POSTGRES_PASSWORD: testpassword
     volumes:
       - postgres_data:/var/lib/postgresql/data  # Persist data in a Docker volume
+    networks:
+      - app_network
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "testuser", "-d", "testdb"]
       interval: 10s
@@ -30,6 +32,11 @@ services:
       - postgres
     ports:
       - "8000:8000"
+    networks:
+      - app_network
+
+networks:
+  app_network:
 
 volumes:
   postgres_data:  # Define the volume for the PostgreSQL service
