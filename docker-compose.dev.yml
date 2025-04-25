@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.dev
     image: blog_tech_django
     environment:
-      - DJANGO_SETTINGS_MODULE=blog_heho.settings
+      - DJANGO_SETTINGS_MODULE=blog_heho.settings.development
       - DJANGO_DEBUG=True
     volumes:
       - .:/app  # Mount the code folder for live editing

@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up SSH
       env:
@@ -20,6 +20,7 @@ jobs:
         # Set up the SSH private key
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 700 ~/.ssh
         chmod 600 ~/.ssh/id_rsa
         # Add EC2 host to known hosts to avoid SSH prompt
         ssh-keyscan -H 13.61.104.192 >> ~/.ssh/known_hosts
