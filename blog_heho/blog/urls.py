@@ -14,7 +14,7 @@ urlpatterns = [
     path('home', views.home_view, name='home'),
     path('contact', views.contact_view, name='contact'),
     path("blog/<int:post_id>/", views.blog_detail_view, name="blog_detail"),
-    path('/success', TemplateView.as_view(template_name='success.html'), name='success'),
+    path('success', TemplateView.as_view(template_name='success.html'), name='success'),
     path('about', views.about_view, name='about')
 ]
 

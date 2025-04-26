@@ -185,16 +185,16 @@ server {
 
 ### Common Issues
 
-#### Can't connect to the database as admin
-If you are using docker-compose in local, you may need to create the superuser in the container.
+#### Admin connection
+You may need to create a superuser to access the Django admin interface.
 For that, check the container `docker container ls`, go into the one running the Django app `docker exec -it <container_id> bash` and run the command to create the superuser:
 ```bash
 python3 blog_heho/manage.py createsuperuser
 ```
 
-### Debugging hints
+#### Deploymnent failed
 
-If for some reasons the deployment failed, remember to check the disk usage on the target machine.
+If for some reasons the deployment failed, remember to check the `disk usage` on the target machine. It is possible that the disk is full, which can cause the deployment to fail.
 
 ```bash
 ssh ubuntu@<my_ip>
@@ -211,4 +211,55 @@ docker system prune -a
 sudo rm -rf /var/log/*
 sudo rm -rf /tmp/*
 ```
+
+### Error Server 500
+
+If you encounter a 500 error, check the logs for more information. You can find the logs in the Nginx error log file:
+```bash
+sudo tail -f /var/log/nginx/error.log
+```
+
+#### Problem occuring only for certain pages
+
+If this issue occurs only on some pages, it may be related to the database connection or a specific view in your Django application. For example, some pages use a model of field that is not present in the database.
+
+This issue can occur when a change in a model has been recently made, but the database schema has not been updated accordingly. This can happen if you have added a new field to a model or changed the type of an existing field, but you have not run the necessary migrations to apply those changes to the database.
+In this case, you may need to run migrations again:
+```bash
+python3 blog_heho/manage.py makemigrations
+python3 blog_heho/manage.py migrate
+```
+
+If for some reason the migrations do not resolve the issue, and you see that the database is out of sync (e.g a field has not been added or removed), you can to try to manually update the schema. 
+- It involves going into the db container, and run sql commands.
+```sql
+# Example of adding a column to a table
+ALTER TABLE <table_name> ADD COLUMN <column_name> <data_type>;
+```
+
+
+### Nginx not fetching the Django app
+
+If you need to check the IP address of the container running the Django app, you can use the following command:
+```text
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container_name_or_id>
+```
+
+In the nginx configuration (likely `etc/nginx/sites-available/<name-of-the-site>`), you can use this IP address to set up the proxy_pass directive:
+```text
+proxy_pass http://<container_ip>:8000;
+```
+
+Restart Nginx to apply the changes:
+```bash
+sudo systemctl restart nginx
+```
+
+Verify the configuration
+```bash
+sudo systemctl status nginx
+```
+
+
+ 
 

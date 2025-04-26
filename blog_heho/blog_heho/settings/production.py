@@ -37,6 +37,7 @@ DEBUG = False
 
 DJANGO_ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "")
 ALLOWED_HOSTS = [host.strip() for host in DJANGO_ALLOWED_HOSTS.split(",") if host]
+ALLOWED_HOSTS.append("localhost")
 
 CSRF_TRUSTED_ORIGINS = []
 if os.getenv("DJANGO_TRUSTED_ORIGINS"): 
@@ -142,7 +143,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "blog/static"),
 ]
 
 # Default primary key field type
