@@ -9,7 +9,7 @@ class Tag(models.Model):
     Model to store blog tags
     '''
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=120, blank=True, unique=True)
+    slug = models.SlugField(max_length=120, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
