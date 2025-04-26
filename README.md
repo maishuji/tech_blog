@@ -8,6 +8,8 @@ A blog platform built with Python and the Django framework, designed to share te
 - User-friendly admin interface for content management.
 - Easy setup with Django.
 - Support Markdown language for blog content
+- Category management for posts.
+
 
 ## Create PostgreSQL Database
 
@@ -44,7 +46,7 @@ DB_HOST = '<ip>'
 DB_PORT = '5432' # default postgres port
 ```
 
-## Installation
+## Installation (Development)
  
 1. Clone the repository:
    ```bash
@@ -61,20 +63,20 @@ DB_PORT = '5432' # default postgres port
 5. Run migrations
    Be sure to configure your database settings in settings.py before running migrations
    ```bash
-   python3 manage.py migrate
+   python3 blog_heho/manage.py migrate
    ```
    You can check that the connection is working by running:
    ```bash
-   python3 manage.py dbshell
+   python3 blog_heho/manage.py dbshell
    ```
    It should open a PostgreSQL shell if everything is configured correctly.
 6. Create superuser
    ```bash
-   python3 manage.py createsuperuser
+   python3 blog_heho/manage.py createsuperuser
    ```
 7. Run server
    ```bash
-   python3 manage.py runserver
+   python3 blog_heho/manage.py runserver
    ```
 
 ## Deployment
@@ -179,6 +181,16 @@ server {
 }
 ```
 
+## Troubleshooting
+
+### Common Issues
+
+#### Can't connect to the database as admin
+If you are using docker-compose in local, you may need to create the superuser in the container.
+For that, check the container `docker container ls`, go into the one running the Django app `docker exec -it <container_id> bash` and run the command to create the superuser:
+```bash
+python3 blog_heho/manage.py createsuperuser
+```
 
 ### Debugging hints
 
