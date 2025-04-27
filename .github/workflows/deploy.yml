@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main  # Trigger the workflow on push to the main branch
-      - 'prod/**' # Mathches any branch under prod, e.g., prod/feature-branch
+      - 'prod/**' # Matches any branch under prod, e.g., prod/feature-branch
 
 jobs:
   deploy:
