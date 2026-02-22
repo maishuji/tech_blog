@@ -213,12 +213,14 @@ healthpi: check-pi-config
 		cd ~/blog-deploy && \
 		if docker compose --env-file .env ps | grep -q "Up"; then \
 			echo "✅ Services are running" && \
-			if curl -f http://localhost/health/ >/dev/null 2>&1; then \
-				echo "✅ Health check passed - Application is healthy"; \
-			elif curl -f http://localhost/ >/dev/null 2>&1; then \
-				echo "✅ Application is responding (health endpoint may not exist)"; \
+			NGINX_PORT=$$(docker compose port nginx 80 2>/dev/null | cut -d: -f2) && \
+			if [ -z "$$NGINX_PORT" ]; then NGINX_PORT=8080; fi && \
+			if curl -f http://localhost:$$NGINX_PORT/health/ >/dev/null 2>&1; then \
+				echo "✅ Health check passed - Application is healthy at port $$NGINX_PORT"; \
+			elif curl -f http://localhost:$$NGINX_PORT/ >/dev/null 2>&1; then \
+				echo "✅ Application is responding at port $$NGINX_PORT"; \
 			else \
-				echo "❌ Application is not responding"; \
+				echo "❌ Application is not responding on port $$NGINX_PORT"; \
 			fi; \
 		else \
 			echo "❌ Services are not running"; \
