@@ -186,6 +186,25 @@ rebuildpi: check-pi-config
 
 ## Raspberry Pi Management Targets ##
 
+# Diagnose deployment issues (check container status, logs, resources)
+diagnosepi: check-pi-config
+	@echo "🔍 Running Pi diagnostics..."
+	@ssh -i "$(PI_SSH_KEY_PATH)" $(PI_USER)@$(PI_HOST) '\
+		echo "=== Container Status ===" && \
+		cd ~/blog-deploy && docker compose -f docker-compose.yml -f docker-compose.pi.yml ps -a && \
+		echo "" && \
+		echo "=== Docker Processes ===" && \
+		docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" && \
+		echo "" && \
+		echo "=== Recent Logs (last 20 lines) ===" && \
+		docker compose -f docker-compose.yml -f docker-compose.pi.yml logs --tail=20 && \
+		echo "" && \
+		echo "=== System Resources ===" && \
+		free -h && df -h / && \
+		echo "" && \
+		echo "=== Docker Disk Usage ===" && \
+		docker system df'
+
 # Check if Pi deployment is running and healthy
 # Health check on Pi
 healthpi: check-pi-config
