@@ -26,6 +26,10 @@ PI_SSH_KEY_PATH ?= .private/pi_ssh.pem
 PI_USER ?= pi
 PI_HOST ?= $(PI_SERVER_IP)
 
+# Expand ~/ in the SSH key path once so ssh/scp receive a real filesystem path.
+RAW_PI_SSH_KEY_PATH := $(PI_SSH_KEY_PATH)
+PI_SSH_KEY_PATH := $(if $(filter ~/%,$(RAW_PI_SSH_KEY_PATH)),$(HOME)/$(patsubst ~/%,%,$(RAW_PI_SSH_KEY_PATH)),$(RAW_PI_SSH_KEY_PATH))
+
 ## Local Development Targets ##
 
 # Run Django development server locally (without Docker)
@@ -78,8 +82,7 @@ testpi-local: buildpi
 check-pi-config:
 	@echo "🔍 Checking Pi configuration..."
 	@if [ -z "$(PI_HOST)" ]; then echo "❌ PI_HOST not set. Use: make deploypi PI_HOST=your-pi-ip"; exit 1; fi
-	@SSH_KEY_EXPANDED=$$(echo "$(PI_SSH_KEY_PATH)" | sed "s|^~|$$HOME|"); \
-	if [ ! -f "$$SSH_KEY_EXPANDED" ]; then echo "❌ SSH key not found at $$SSH_KEY_EXPANDED"; exit 1; fi
+	@if [ ! -f "$(PI_SSH_KEY_PATH)" ]; then echo "❌ SSH key not found at $(PI_SSH_KEY_PATH)"; exit 1; fi
 	@echo "✅ Configuration OK"
 	@echo "   Host: $(PI_HOST)"
 	@echo "   User: $(PI_USER)"
