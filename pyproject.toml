@@ -1,0 +1,38 @@
+[project]
+name = "tech-blog-heho"
+version = "0.1.0"
+description = "A Django platform for technical blog posts"
+requires-python = ">=3.11,<3.14"
+# Retain the existing dependency pins during the migration.
+dependencies = [
+    "asgiref==3.8.1",
+    "Django==4.2.19",
+    "dotenv==0.9.9",
+    "gunicorn==23.0.0",
+    "Markdown==3.7",
+    "pillow==11.1.0",
+    "psycopg==3.2.5",
+    "python-dotenv==1.0.1",
+    "sqlparse==0.5.3",
+    "typing-extensions==4.12.2",
+]
+
+[dependency-groups]
+dev = [
+    "astroid==3.3.8",
+    "dill==0.3.9",
+    "importlib-metadata==8.6.1",
+    "isort==6.0.1",
+    "mccabe==0.7.0",
+    "platformdirs==4.3.6",
+    "pylint==3.3.4",
+    "pylint-django==2.6.1",
+    "pylint-plugin-utils==0.8.2",
+    "tomli==2.2.1",
+    "tomlkit==0.13.2",
+    "zipp==3.21.0",
+]
+
+[tool.uv]
+# Run the Django application from source; it is not a distributable package.
+package = false

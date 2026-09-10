@@ -32,13 +32,19 @@ PI_SSH_KEY_PATH := $(if $(filter ~/%,$(RAW_PI_SSH_KEY_PATH)),$(HOME)/$(patsubst 
 
 ## Local Development Targets ##
 
+.PHONY: runlocal lint sync
+
 # Run Django development server locally (without Docker)
 runlocal:
-	python3 blog_heho/manage.py runserver
+	uv run --locked python blog_heho/manage.py runserver
 
 # Run pylint to check code quality in the blog app
 lint:
-	pylint blog_heho/blog
+	uv run --locked pylint blog_heho/blog
+
+# Install the locked application and development dependencies
+sync:
+	uv sync --locked
 
 ## Local Docker Development Targets ##
 
@@ -126,7 +132,8 @@ deploy-files: check-pi-config prepare-pi
 		docker-compose.pi.yml \
 		nginx.pi.conf \
 		Dockerfile.prod \
-		requirements.prod.txt \
+		pyproject.toml \
+		uv.lock \
 		wait-for-it.sh \
 		.env.pi.deploy \
 		$(PI_USER)@$(PI_HOST):~/blog-deploy/

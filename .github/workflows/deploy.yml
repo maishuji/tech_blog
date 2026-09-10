@@ -35,7 +35,7 @@ jobs:
         ls ~/.ssh/*
         ssh ubuntu@13.61.104.192 'mkdir -p ~/app && chmod 755 ~/app'
         scp -r blog_heho docker-compose.prod.yml docker-compose.yml \
-        Dockerfile.prod requirements.prod.txt ubuntu@13.61.104.192:~/app/
+        Dockerfile.prod pyproject.toml uv.lock ubuntu@13.61.104.192:~/app/
     - name: Set up environment variables on EC2
       env:
         EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}

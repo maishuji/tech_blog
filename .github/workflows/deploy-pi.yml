@@ -60,7 +60,8 @@ jobs:
           docker-compose.pi.yml \
           nginx.pi.conf \
           Dockerfile.prod \
-          requirements.prod.txt \
+          pyproject.toml \
+          uv.lock \
           wait-for-it.sh \
           django-pi.tar.gz \
           $PI_USER@$PI_HOST:~/deployments/pr-${{ github.event.pull_request.number }}/
