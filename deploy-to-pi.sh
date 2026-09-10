@@ -163,7 +163,8 @@ deploy_files() {
         docker-compose.pi.yml \
         nginx.pi.conf \
         Dockerfile.prod \
-        requirements.prod.txt \
+        pyproject.toml \
+        uv.lock \
         wait-for-it.sh \
         "$PI_USER@$PI_HOST:$DEPLOYMENT_DIR/"; then
         print_success "Files uploaded successfully"

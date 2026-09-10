@@ -1,20 +1,29 @@
 # Use an official Python runtime as a parent image
 FROM python:3.13.2-slim
 
+# Install the pinned uv version used for dependency installation
+COPY --from=ghcr.io/astral-sh/uv:0.12.12 /uv /usr/local/bin/uv
+
 # Set the working directory in the container
 WORKDIR /app
+
+# Keep container dependencies outside the source directory mounted by Compose
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv \
+    UV_PYTHON_DOWNLOADS=never \
+    PATH="/opt/venv/bin:$PATH"
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y libpq-dev curl
 
+# Install dependencies before copying source to reuse the dependency layer
+COPY pyproject.toml uv.lock /app/
+RUN uv sync --locked --no-cache
+
 # Copy the current directory contents into the container at /app
 COPY . /app/
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
 # Set the environment variable for Django
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 # Expose port 8000 for Django development server
 EXPOSE 8000

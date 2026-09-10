@@ -1,8 +1,16 @@
 # Use an official Python runtime as a parent image
 FROM python:3.13.3-slim
 
+# Install the pinned uv version used for dependency installation
+COPY --from=ghcr.io/astral-sh/uv:0.12.12 /uv /usr/local/bin/uv
+
 # Set the working directory in the container
 WORKDIR /app
+
+# Make the locked environment available to Python and Gunicorn at runtime
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv \
+    UV_PYTHON_DOWNLOADS=never \
+    PATH="/opt/venv/bin:$PATH"
 
 # Install system dependencies (only what's necessary for production)
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -10,11 +18,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*  # Clean up the apt cache to reduce image size
 
+# Install dependencies before copying source to reuse the dependency layer
+COPY pyproject.toml uv.lock /app/
+RUN uv sync --locked --no-dev --no-cache
+
 # Copy the current directory contents into the container at /app
 COPY . /app/
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.prod.txt
 
 # Make wait-for-it.sh executable
 RUN chmod +x wait-for-it.sh
